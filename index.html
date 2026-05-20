@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pricing – StreamLive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #e74c3c;
+      --red-dark: #c0392b;
+      --dark: #1a1a2e;
+      --dark2: #2c3e50;
+      --light: #f9f9f9;
+      --muted: #777;
+      --border: #eee;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--dark); background: #fff; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px; background: #fff; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; text-decoration: none; }
+    .logo span { color: var(--red); }
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a { margin-left: 28px; text-decoration: none; color: #555; font-size: 14px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--red); }
+    .nav-cta { background: var(--red); color: #fff !important; padding: 8px 18px; border-radius: 20px; }
+    .nav-cta:hover { background: var(--red-dark) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--dark); padding: 88px 48px 72px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(231,76,60,.18), transparent);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(231,76,60,.15); border: 1px solid rgba(231,76,60,.3);
+      color: #ff8a80; font-size: 12px; font-weight: 600; padding: 6px 14px;
+      border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 24px; position: relative;
+    }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 1.5s ease infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: 54px; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 18px; position: relative; }
+    .hero h1 span { color: var(--red); }
+    .hero p { font-size: 17px; color: rgba(255,255,255,.6); max-width: 520px; margin: 0 auto 0; line-height: 1.7; position: relative; }
+
+    /* ── BILLING TOGGLE ── */
+    .billing-toggle {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      margin: 40px auto 0; position: relative;
+    }
+    .billing-label { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.5); cursor: pointer; transition: color .2s; }
+    .billing-label.active { color: #fff; }
+    .toggle-track {
+      width: 52px; height: 28px; background: rgba(255,255,255,.12); border-radius: 14px;
+      cursor: pointer; position: relative; transition: background .3s; border: 1px solid rgba(255,255,255,.15);
+    }
+    .toggle-track.yearly { background: var(--red); border-color: var(--red); }
+    .toggle-knob {
+      position: absolute; top: 3px; left: 3px; width: 22px; height: 22px;
+      background: #fff; border-radius: 50%; transition: transform .3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
+    .toggle-track.yearly .toggle-knob { transform: translateX(24px); }
+    .save-badge {
+      background: #27ae60; color: #fff; font-size: 11px; font-weight: 700;
+      padding: 3px 9px; border-radius: 20px; letter-spacing: .5px;
+    }
+
+    /* ── PRICING SECTION ── */
+    .pricing-section { padding: 80px 48px; }
+    .pricing-inner { max-width: 1100px; margin: 0 auto; }
+
+    /* ── PLAN CARDS ── */
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .plan-card {
+      border-radius: 24px; padding: 36px 32px; border: 1px solid var(--border);
+      position: relative; transition: .25s; background: #fff;
+    }
+    .plan-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,.08); }
+    .plan-card.popular {
+      background: var(--dark); border-color: var(--dark);
+      transform: scale(1.04);
+    }
+    .plan-card.popular:hover { transform: scale(1.04) translateY(-4px); box-shadow: 0 24px 72px rgba(26,26,46,.35); }
+    .popular-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--red); color: #fff; font-size: 11px; font-weight: 700;
+      padding: 5px 16px; border-radius: 20px; letter-spacing: 1px; white-space: nowrap;
+    }
+    .plan-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .plan-card.popular .plan-name { color: rgba(255,255,255,.5); }
+    .plan-price { display: flex; align-items: flex-end; gap: 4px; margin-bottom: 6px; }
+    .price-currency { font-size: 22px; font-weight: 700; color: var(--dark); line-height: 1.6; }
+    .plan-card.popular .price-currency { color: #fff; }
+    .price-amount { font-family: 'Syne', sans-serif; font-size: 52px; font-weight: 800; color: var(--dark); line-height: 1; }
+    .plan-card.popular .price-amount { color: #fff; }
+    .price-period { font-size: 14px; color: var(--muted); margin-bottom: 4px; }
+    .plan-card.popular .price-period { color: rgba(255,255,255,.45); }
+    .plan-original { font-size: 13px; color: var(--muted); text-decoration: line-through; margin-bottom: 4px; min-height: 18px; }
+    .plan-card.popular .plan-original { color: rgba(255,255,255,.35); }
+    .plan-desc { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+    .plan-card.popular .plan-desc { color: rgba(255,255,255,.5); }
+    .plan-btn {
+      display: block; width: 100%; padding: 13px; border-radius: 12px;
+      text-align: center; font-size: 14px; font-weight: 600; cursor: pointer;
+      border: none; transition: .2s; text-decoration: none; font-family: 'DM Sans', sans-serif;
+      margin-bottom: 28px;
+    }
+    .plan-btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .plan-btn-outline:hover { border-color: var(--red); color: var(--red); }
+    .plan-btn-primary { background: var(--red); color: #fff; }
+    .plan-btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .plan-btn-light { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.15); }
+    .plan-btn-light:hover { background: rgba(255,255,255,.2); }
+    .plan-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+    .plan-card.popular .plan-divider { background: rgba(255,255,255,.1); }
+    .feature-list { display: flex; flex-direction: column; gap: 12px; }
+    .feature-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+    .feature-item.has { color: var(--dark); }
+    .feature-item.has .f-icon { color: var(--red); }
+    .feature-item.no { color: #bbb; }
+    .feature-item.no .f-icon { color: #ddd; }
+    .plan-card.popular .feature-item.has { color: rgba(255,255,255,.85); }
+    .plan-card.popular .feature-item.no { color: rgba(255,255,255,.25); }
+    .plan-card.popular .feature-item.has .f-icon { color: #ff8a80; }
+    .f-icon { font-size: 15px; flex-shrink: 0; width: 18px; text-align: center; }
+
+    /* ── SECTION SHARED ── */
+    .section { padding: 80px 48px; }
+    .section.alt { background: var(--light); }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .label { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--red); text-transform: uppercase; margin-bottom: 10px; }
+    .title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--dark); line-height: 1.2; }
+    .subtitle { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+    /* ── FEATURE COMPARISON FULL TABLE ── */
+    .full-table-wrap { overflow-x: auto; margin-top: 52px; }
+    .full-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .full-table th { padding: 16px 20px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; text-align: center; border-bottom: 2px solid var(--border); }
+    .full-table th:first-child { text-align: left; width: 35%; }
+    .full-table th.col-pop { background: var(--dark); color: #fff; border-radius: 12px 12px 0 0; border-bottom: none; padding-top: 18px; }
+    .full-table td { padding: 13px 20px; border-bottom: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 13px; }
+    .full-table td:first-child { text-align: left; font-weight: 500; color: var(--dark); }
+    .full-table td.col-pop { background: rgba(26,26,46,.03); }
+    .full-table tr:last-child td { border-bottom: none; }
+    .full-table .section-row td { background: var(--light); font-weight: 700; color: var(--dark); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 10px 20px; text-align: left; }
+    .full-table .section-row td.col-pop { background: rgba(26,26,46,.05); }
+    .tick { color: var(--red); font-size: 16px; font-weight: 700; }
+    .cross { color: #ddd; font-size: 18px; }
+    .partial { font-size: 12px; font-weight: 600; color: #f39c12; }
+
+    /* ── ADD-ONS ── */
+    .addons { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
+    .addon {
+      border: 1px solid var(--border); border-radius: 16px; padding: 24px 22px;
+      display: flex; align-items: flex-start; gap: 16px; transition: .2s;
+    }
+    .addon:hover { border-color: rgba(231,76,60,.3); box-shadow: 0 8px 28px rgba(231,76,60,.07); }
+    .addon-icon { font-size: 28px; flex-shrink: 0; }
+    .addon-info h4 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .addon-info p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+    .addon-price { font-size: 13px; font-weight: 700; color: var(--red); }
+
+    /* ── GUARANTEE ── */
+    .guarantee {
+      background: linear-gradient(135deg, var(--dark), var(--dark2));
+      border-radius: 24px; padding: 52px 48px; display: flex; align-items: center;
+      gap: 48px; margin-top: 80px;
+    }
+    .guarantee-icon { font-size: 64px; flex-shrink: 0; }
+    .guarantee h3 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .guarantee p { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.7; max-width: 500px; }
+
+    /* ── FAQ ── */
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 60px; margin-top: 52px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; cursor: pointer; font-size: 14px; font-weight: 600; gap: 16px; }
+    .faq-icon { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: .2s; font-size: 15px; color: var(--muted); }
+    .faq-item.open .faq-icon { background: var(--red); border-color: var(--red); color: #fff; }
+    .faq-a { font-size: 13px; color: var(--muted); line-height: 1.7; padding-bottom: 18px; display: none; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta { background: var(--dark); padding: 88px 48px; text-align: center; position: relative; overflow: hidden; }
+    .bottom-cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 100% at 50% 100%, rgba(231,76,60,.2), transparent); }
+    .bottom-cta h2 { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800; color: #fff; margin-bottom: 14px; position: relative; }
+    .bottom-cta h2 span { color: var(--red); }
+    .bottom-cta p { font-size: 16px; color: rgba(255,255,255,.55); margin-bottom: 36px; position: relative; }
+    .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn { padding: 13px 32px; border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: .2s; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-block; }
+    .btn-primary { background: var(--red); color: #fff; }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,.3); color: #fff; }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,.06); color: rgba(255,255,255,.5); text-align: center; padding: 24px; font-size: 13px; }
+    footer span { color: var(--red); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      .plans { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .plan-card.popular { transform: none; }
+      .plan-card.popular:hover { transform: translateY(-4px); }
+      .addons { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .guarantee { flex-direction: column; gap: 24px; text-align: center; padding: 40px 28px; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 20px 52px; }
+      .hero h1 { font-size: 34px; }
+      .pricing-section, .section { padding: 56px 20px; }
+      .bottom-cta { padding: 60px 20px; }
+      .bottom-cta h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="streamlive-website.html" class="logo">Stream<span>Live</span></a>
+  <div class="nav-links">
+    <a href="file:///D:/website/StreamLive/1%20home.html">Home</a>
+    <a href="file:///D:/website/StreamLive/2%20Features.html">Features</a>
+    <a href="file:///D:/website/StreamLive/3%20price.html">Pricing</a>
+    <a href="file:///D:/website/StreamLive/4%20about.html">About</a>
+    <a href="file:///D:/website/StreamLive/5%20getstarted.html" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">Simple pricing</div>
+  <h1>Plans for every<br><span>type of viewer</span></h1>
+  <p>Start free. Upgrade when you're ready. No hidden fees, no lock-in contracts — ever.</p>
+
+  <!-- BILLING TOGGLE -->
+  <div class="billing-toggle">
+    <span class="billing-label active" id="lbl-monthly" onclick="setBilling('monthly')">Monthly</span>
+    <div class="toggle-track" id="toggle-track" onclick="flipBilling()">
+      <div class="toggle-knob"></div>
+    </div>
+    <span class="billing-label" id="lbl-yearly" onclick="setBilling('yearly')">Yearly</span>
+    <span class="save-badge">Save 35%</span>
+  </div>
+</section>
+
+<!-- PLAN CARDS -->
+<section class="pricing-section">
+  <div class="pricing-inner">
+    <div class="plans">
+
+      <!-- FREE -->
+      <div class="plan-card fade-up">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">
+          <span class="price-currency">$</span>
+          <span class="price-amount">0</span>
+        </div>
+        <div class="price-period">forever free</div>
+        <div class="plan-original">&nbsp;</div>
+        <div class="plan-desc">Perfect for casual listeners and first-time streamers.</div>
+        <a href="file:///D:/website/StreamLive/5%20getstarted.html" class="plan-btn plan-btn-outline">Get Started Free</a>
+        <div class="plan-divider"></div>
+        <div class="feature-list">
+          <div class="feature-item has"><span class="f-icon">✓</span> 500+ live TV channels</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> 5,000+ radio stations</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> SD streaming quality</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> 1 device at a time</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Mobile & web access</div>
+          <div class="feature-item no"><span class="f-icon">✗</span> Ad-free experience</div>
+          <div class="feature-item no"><span class="f-icon">✗</span> HD & 4K quality</div>
+          <div class="feature-item no"><span class="f-icon">✗</span> Offline downloads</div>
+          <div class="feature-item no"><span class="f-icon">✗</span> Catch-up TV</div>
+          <div class="feature-item no"><span class="f-icon">✗</span> DVR recording</div>
+        </div>
+      </div>
+
+      <!-- PRO (POPULAR) -->
+      <div class="plan-card popular fade-up">
+        <div class="popular-badge">⭐ Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">
+          <span class="price-currency">$</span>
+          <span class="price-amount" id="pro-price">8</span>
+        </div>
+        <div class="price-period" id="pro-period">per month</div>
+        <div class="plan-original" id="pro-original">&nbsp;</div>
+        <div class="plan-desc">For serious streamers who want it all — no compromises.</div>
+        <a href="#" class="plan-btn plan-btn-primary">Start 7-Day Free Trial</a>
+        <div class="plan-divider"></div>
+        <div class="feature-list">
+          <div class="feature-item has"><span class="f-icon">✓</span> 10,000+ live TV channels</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> 50,000+ radio stations</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> HD & 4K streaming</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Up to 3 devices</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> 100% ad-free</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Offline downloads (20 titles)</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> 7-day catch-up TV</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> DVR recording (50 hrs)</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> All devices supported</div>
+          <div class="feature-item no"><span class="f-icon">✗</span> Family sharing (5 profiles)</div>
+        </div>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan-card fade-up">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">
+          <span class="price-currency">$</span>
+          <span class="price-amount" id="prem-price">14</span>
+        </div>
+        <div class="price-period" id="prem-period">per month</div>
+        <div class="plan-original" id="prem-original">&nbsp;</div>
+        <div class="plan-desc">The ultimate plan for families and power users who demand more.</div>
+        <a href="#" class="plan-btn plan-btn-outline">Start 7-Day Free Trial</a>
+        <div class="plan-divider"></div>
+        <div class="feature-list">
+          <div class="feature-item has"><span class="f-icon">✓</span> Everything in Pro</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Up to 5 devices</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Family sharing (5 profiles)</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Unlimited downloads</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> DVR recording (200 hrs)</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> 4K Ultra HD priority</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Lossless audio quality</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Early access to new features</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Priority customer support</div>
+          <div class="feature-item has"><span class="f-icon">✓</span> Dedicated account manager</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GUARANTEE -->
+    <div class="guarantee fade-up">
+      <div class="guarantee-icon">🛡️</div>
+      <div>
+        <h3>30-Day Money-Back Guarantee</h3>
+        <p>Not happy? We'll refund every cent — no questions asked, no forms to fill. We're that confident you'll love StreamLive. Cancel within 30 days of your first paid month and get a full refund, automatically.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL FEATURE COMPARISON -->
+<section class="section alt">
+  <div class="section-inner">
+    <div class="fade-up" style="text-align:center">
+      <div class="label">Full comparison</div>
+      <h2 class="title" style="margin-bottom:12px">Every feature, side by side</h2>
+      <p class="subtitle">See exactly what's included in each plan before you decide.</p>
+    </div>
+    <div class="full-table-wrap fade-up">
+      <table class="full-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th class="col-pop">Pro</th>
+            <th>Premium</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-row"><td colspan="4">📺 Live TV</td></tr>
+          <tr><td>Live channels</td><td>500+</td><td class="col-pop"><strong>10,000+</strong></td><td><strong>10,000+</strong></td></tr>
+          <tr><td>Streaming quality</td><td>SD only</td><td class="col-pop">HD & 4K</td><td>4K Ultra HD</td></tr>
+          <tr><td>Catch-up TV</td><td><span class="cross">✗</span></td><td class="col-pop">7 days</td><td>14 days</td></tr>
+          <tr><td>DVR recording</td><td><span class="cross">✗</span></td><td class="col-pop">50 hrs</td><td>200 hrs</td></tr>
+          <tr><td>Simultaneous streams</td><td>1</td><td class="col-pop">3</td><td>5</td></tr>
+
+          <tr class="section-row"><td colspan="4">📻 Radio & Music</td></tr>
+          <tr><td>Radio stations</td><td>5,000+</td><td class="col-pop"><strong>50,000+</strong></td><td><strong>50,000+</strong></td></tr>
+          <tr><td>Audio quality</td><td>Standard</td><td class="col-pop">High quality</td><td>Lossless</td></tr>
+          <tr><td>Offline listening</td><td><span class="cross">✗</span></td><td class="col-pop"><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+          <tr><td>Background play</td><td><span class="tick">✓</span></td><td class="col-pop"><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+
+          <tr class="section-row"><td colspan="4">📥 Downloads</td></tr>
+          <tr><td>Offline downloads</td><td><span class="cross">✗</span></td><td class="col-pop">20 titles</td><td>Unlimited</td></tr>
+          <tr><td>Download quality</td><td><span class="cross">✗</span></td><td class="col-pop">HD</td><td>4K</td></tr>
+
+          <tr class="section-row"><td colspan="4">👥 Account</td></tr>
+          <tr><td>User profiles</td><td>1</td><td class="col-pop">1</td><td>5</td></tr>
+          <tr><td>Family sharing</td><td><span class="cross">✗</span></td><td class="col-pop"><span class="cross">✗</span></td><td><span class="tick">✓</span></td></tr>
+          <tr><td>Parental controls</td><td><span class="cross">✗</span></td><td class="col-pop"><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+
+          <tr class="section-row"><td colspan="4">⚙️ Experience</td></tr>
+          <tr><td>Ad-free</td><td><span class="cross">✗</span></td><td class="col-pop"><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+          <tr><td>All device support</td><td><span class="partial">Mobile only</span></td><td class="col-pop"><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+          <tr><td>Customer support</td><td>Community</td><td class="col-pop">Email & chat</td><td>Priority + phone</td></tr>
+          <tr><td>Early feature access</td><td><span class="cross">✗</span></td><td class="col-pop"><span class="cross">✗</span></td><td><span class="tick">✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="fade-up">
+      <div class="label">Optional add-ons</div>
+      <h2 class="title" style="margin-bottom:12px">Build your perfect plan</h2>
+      <p class="subtitle">Add exactly what you need — available on Pro and Premium plans.</p>
+    </div>
+    <div class="addons">
+      <div class="addon fade-up">
+        <div class="addon-icon">🎮</div>
+        <div class="addon-info">
+          <h4>Sports Ultra Pack</h4>
+          <p>Access to every premium sports channel — football, cricket, F1, basketball and more in 4K.</p>
+          <div class="addon-price">+ $4.99 / month</div>
+        </div>
+      </div>
+      <div class="addon fade-up">
+        <div class="addon-icon">🎬</div>
+        <div class="addon-info">
+          <h4>Movies & Series Bundle</h4>
+          <p>Unlock 5,000+ on-demand movies and full series libraries with new releases every week.</p>
+          <div class="addon-price">+ $3.99 / month</div>
+        </div>
+      </div>
+      <div class="addon fade-up">
+        <div class="addon-icon">🌍</div>
+        <div class="addon-info">
+          <h4>International Pack</h4>
+          <p>200+ channels from South Asia, Middle East, Europe, and Latin America in local languages.</p>
+          <div class="addon-price">+ $2.99 / month</div>
+        </div>
+      </div>
+      <div class="addon fade-up">
+        <div class="addon-icon">👶</div>
+        <div class="addon-info">
+          <h4>Kids & Family Pack</h4>
+          <p>Dedicated kids channels, parental controls, and a completely safe browsing environment.</p>
+          <div class="addon-price">+ $1.99 / month</div>
+        </div>
+      </div>
+      <div class="addon fade-up">
+        <div class="addon-icon">🎵</div>
+        <div class="addon-info">
+          <h4>Music Premium</h4>
+          <p>Lossless Hi-Fi audio, exclusive artist content, and early album releases before anywhere else.</p>
+          <div class="addon-price">+ $2.99 / month</div>
+        </div>
+      </div>
+      <div class="addon fade-up">
+        <div class="addon-icon">📡</div>
+        <div class="addon-info">
+          <h4>Extra DVR Storage</h4>
+          <p>Add 200 hours of additional cloud DVR recording storage to your existing plan.</p>
+          <div class="addon-price">+ $1.49 / month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section alt">
+  <div class="section-inner">
+    <div class="fade-up" style="text-align:center;margin-bottom:4px">
+      <div class="label">FAQ</div>
+      <h2 class="title" style="margin-bottom:12px">Pricing questions, answered</h2>
+      <p class="subtitle" style="margin:0 auto;max-width:480px">Still unsure? <a href="#" style="color:var(--red);text-decoration:none;font-weight:600">Chat with us →</a></p>
+    </div>
+    <div class="faq-grid fade-up">
+      <div>
+        <div class="faq-item open">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can I change plans at any time?
+            <div class="faq-icon">−</div>
+          </div>
+          <div class="faq-a">Yes. You can upgrade, downgrade, or cancel your plan at any time from your account settings. Changes take effect at the start of your next billing cycle.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            What happens after the free trial?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">After your 7-day free trial, you'll be charged for the plan you selected. We'll remind you 2 days before the trial ends. Cancel anytime before then and you won't be charged.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Is there a student discount?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">Yes! Students with a valid university email get 40% off Pro and Premium plans. Apply via our student verification page — discount is valid for up to 4 years.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Do you offer annual billing?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">Yes — switch to yearly billing and save 35%. You'll be billed once per year and won't need to think about it again. Toggle the billing switch at the top of this page to see yearly prices.</div>
+        </div>
+      </div>
+      <div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            What payment methods are accepted?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">We accept all major credit and debit cards (Visa, Mastercard, Amex), PayPal, Apple Pay, Google Pay, and bank transfer for annual plans.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can I share my account?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">Pro allows up to 3 simultaneous streams on 1 account. Premium includes full family sharing with up to 5 independent profiles, each with their own watchlist and history.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Is there a money-back guarantee?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">Absolutely. If you're not satisfied within the first 30 days of your paid plan, we'll refund you completely — no questions asked. Just contact our support team.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Do you offer business or team plans?
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-a">Yes! We offer custom enterprise plans for hotels, offices, and businesses. Contact our sales team at business@streamlive.com for a tailored quote.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>Start streaming <span>today</span></h2>
+  <p>Join 5 million viewers. Your first 7 days are completely free — no card needed.</p>
+  <div class="btns">
+    <a href="file:///D:/website/StreamLive/5%20getstarted.html" class="btn btn-primary">Start Free Trial</a>
+    <a href="file:///D:/website/StreamLive/2%20Features.html" class="btn btn-outline">See All Features</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2026 Stream<span>Live</span>. All rights reserved. Built with love for live content.
+</footer>
+
+<script>
+  // ── BILLING TOGGLE ─────────────────────────────────────────
+  let isYearly = false;
+
+  const prices = {
+    pro:  { monthly: { amount: '8',  period: 'per month',      original: '' },
+            yearly:  { amount: '5',  period: 'per month, billed yearly', original: 'Was $8/mo' } },
+    prem: { monthly: { amount: '14', period: 'per month',      original: '' },
+            yearly:  { amount: '9',  period: 'per month, billed yearly', original: 'Was $14/mo' } },
+  };
+
+  function setBilling(mode) {
+    isYearly = (mode === 'yearly');
+    updatePrices();
+  }
+
+  function flipBilling() {
+    isYearly = !isYearly;
+    updatePrices();
+  }
+
+  function updatePrices() {
+    const track = document.getElementById('toggle-track');
+    const lblM  = document.getElementById('lbl-monthly');
+    const lblY  = document.getElementById('lbl-yearly');
+
+    track.classList.toggle('yearly', isYearly);
+    lblM.classList.toggle('active', !isYearly);
+    lblY.classList.toggle('active', isYearly);
+
+    const key = isYearly ? 'yearly' : 'monthly';
+
+    ['pro', 'prem'].forEach(plan => {
+      const p = prices[plan][key];
+      document.getElementById(`${plan}-price`).textContent   = p.amount;
+      document.getElementById(`${plan}-period`).textContent  = p.period;
+      document.getElementById(`${plan}-original`).textContent = p.original;
+    });
+  }
+
+  // ── FAQ TOGGLE ─────────────────────────────────────────────
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-icon').textContent = '+';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      el.querySelector('.faq-icon').textContent = '−';
+    }
+  }
+
+  // ── SCROLL FADE-IN ─────────────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
